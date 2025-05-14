@@ -33,7 +33,7 @@
 #include <regex>
 
 #if not(defined(ANDROID) || defined(FREE_VERSION))
-#include <boost/process.hpp>
+#define BOOST_PROCESS_DISABLED
 #endif
 #include <locale>
 #include <zlib.h>
@@ -69,7 +69,7 @@ void ResourceManager::terminate()
 }
 
 bool ResourceManager::launchCorrect(const std::string& product, const std::string& app) { // curently works only on windows
-#if not(defined(ANDROID) || defined(FREE_VERSION))
+#if not(defined(ANDROID) || defined(FREE_VERSION)) && !defined(BOOST_PROCESS_DISABLED)
     auto init_path = m_binaryPath.parent_path();
     init_path /= INIT_FILENAME;
     if (std::filesystem::exists(init_path)) // debug version
@@ -137,6 +137,7 @@ bool ResourceManager::launchCorrect(const std::string& product, const std::strin
     c.detach();
     return true;
 #else
+    g_logger.info("Process launch disabled due to Boost.Process version conflict");
     return false;
 #endif
 }
