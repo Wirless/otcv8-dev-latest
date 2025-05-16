@@ -95,6 +95,10 @@ public:
     void setQuickLootFlags(uint32 flags) { m_quickLootFlags = flags; }
     void setShader(const std::string& str) { m_shader = str; }
 
+    void setRarityId(Otc::ItemRarity_t rarityId) { m_rarityId = rarityId; }
+    int getRarityId() { return m_rarityId; }
+
+
     int getCountOrSubType() { return m_countOrSubType; }
     int getSubType();
     int getCount();
@@ -178,6 +182,7 @@ private:
     uint32 m_quickLootFlags;
     uint8 m_phase;
     ticks_t m_lastPhase;
+    Otc::ItemRarity_t m_rarityId;
 
     stdext::packed_storage<uint16> m_customAttribs;
 };

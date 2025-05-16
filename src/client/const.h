@@ -47,6 +47,14 @@ namespace Otc
         MAX_AUTOWALK_DIST = 127
     };
 
+    enum ItemRarity_t : uint8_t {
+        ITEM_RARITY_NONE = 0,
+        ITEM_RARITY_COMMON,
+        ITEM_RARITY_RARE,
+        ITEM_RARITY_EPIC,
+        ITEM_RARITY_LEGENDARY
+    };
+
     enum DepthConst {
         MAX_DEPTH = 16384 - 2048
     };

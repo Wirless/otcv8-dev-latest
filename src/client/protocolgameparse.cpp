@@ -1706,28 +1706,42 @@ void ProtocolGame::parseCreatureUnpass(const InputMessagePtr& msg)
 void ProtocolGame::parseEditText(const InputMessagePtr& msg)
 {
     uint id = msg->getU32();
+    g_logger.info(stdext::format("Parsed ID: %u", id));
 
     int itemId;
     if (g_game.getProtocolVersion() >= 1010) {
-        // TODO: processEditText with ItemPtr as parameter
         ItemPtr item = getItem(msg);
         itemId = item->getId();
-    } else
+        g_logger.info(stdext::format("Parsed Item ID (protocol >= 1010): %d", itemId));
+    }
+    else {
         itemId = msg->getU16();
+        msg->getU8();
+        g_logger.info(stdext::format("Parsed Item ID (protocol < 1010): %d", itemId));
+    }
 
     int maxLength = msg->getU16();
+    g_logger.info(stdext::format("Parsed Max Length: %d", maxLength));
+
     std::string text = msg->getString();
+    g_logger.info(stdext::format("Parsed Text: %s", text));
 
     std::string writer = msg->getString();
+    g_logger.info(stdext::format("Parsed Writer: %s", writer));
 
-    if (g_game.getFeature(Otc::GameTibia12Protocol) && g_game.getProtocolVersion() > 1240)
+    if (g_game.getFeature(Otc::GameTibia12Protocol) && g_game.getProtocolVersion() > 1240) {
         msg->getU8();
+        g_logger.info("Parsed Tibia12+ Placeholder Byte");
+    }
 
     std::string date = "";
-    if (g_game.getFeature(Otc::GameWritableDate))
+    if (g_game.getFeature(Otc::GameWritableDate)) {
         date = msg->getString();
+        g_logger.info(stdext::format("Parsed Date: %s", date));
+    }
 
     g_game.processEditText(id, itemId, maxLength, text, writer, date);
+    g_logger.info("Processed EditText");
 }
 
 void ProtocolGame::parseEditList(const InputMessagePtr& msg)
@@ -3604,6 +3618,8 @@ ItemPtr ProtocolGame::getItem(const InputMessagePtr& msg, int id, bool hasDescri
             item->setQuickLootFlags(msg->getU32()); // quick loot flags
         }
     }
+
+    item->setRarityId(static_cast<Otc::ItemRarity_t>(msg->getU8()));
 
     if (g_game.getFeature(Otc::GameItemAnimationPhase)) {
         if (item->getAnimationPhases() > 1) {
