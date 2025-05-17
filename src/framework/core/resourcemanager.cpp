@@ -606,6 +606,20 @@ std::string ResourceManager::fileChecksum(const std::string& path) {
     PHYSFS_close(file);
 
     auto checksum = g_crypt.crc32(buffer, false);
+    
+    // Remove leading zeros from the checksum for consistency
+    size_t firstNonZero = 0;
+    while (firstNonZero < checksum.length() && checksum[firstNonZero] == '0') {
+        firstNonZero++;
+    }
+    
+    // If it's all zeros, keep at least one
+    if (firstNonZero == checksum.length()) {
+        checksum = "0";
+    } else if (firstNonZero > 0) {
+        checksum = checksum.substr(firstNonZero);
+    }
+    
     cache[path] = checksum;
 
     return checksum;

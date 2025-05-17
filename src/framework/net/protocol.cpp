@@ -223,8 +223,15 @@ void Protocol::internalRecvData(uint8* buffer, uint32 size)
         }
     } else if (m_checksumEnabled) {
         if (m_inputMessage->peekU32() == 0) { // compressed data
-            m_inputMessage->getU32();
-            decompress = true;
+            // First check if it's a valid checksum that starts with 0
+            bool validChecksum = m_inputMessage->readChecksum();
+            if (!validChecksum) {
+                // If not a valid checksum that starts with 0, treat as compressed
+                // Reset position after failed checksum read attempt
+                m_inputMessage->setReadPos(m_inputMessage->getHeaderSize());
+                m_inputMessage->getU32(); // Skip the first 0
+                decompress = true;
+            }
         } else if (!m_inputMessage->readChecksum()) {
             g_logger.traceError(stdext::format("got a network message with invalid checksum, size: %i", (int)m_inputMessage->getMessageSize()));
             return;

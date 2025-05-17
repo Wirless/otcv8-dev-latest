@@ -128,6 +128,20 @@ int Http::download(const std::string& url, std::string path, int timeout) {
                 return;
             }
             std::string checksum = g_crypt.crc32(std::string(result->response.begin(), result->response.end()), false);
+            
+            // Remove leading zeros from the checksum for consistency
+            size_t firstNonZero = 0;
+            while (firstNonZero < checksum.length() && checksum[firstNonZero] == '0') {
+                firstNonZero++;
+            }
+            
+            // If it's all zeros, keep at least one
+            if (firstNonZero == checksum.length()) {
+                checksum = "0";
+            } else if (firstNonZero > 0) {
+                checksum = checksum.substr(firstNonZero);
+            }
+            
             g_dispatcher.addEventEx("Http::onDownload", [&, result, path, checksum]() {
                 if (result->error.empty()) {
                     if (!path.empty() && path[0] == '/')

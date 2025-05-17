@@ -116,6 +116,14 @@ local function updateFiles(data, keepCurrentFiles)
     keepCurrentFiles = true
   end
   
+  -- Check if we have a server version and it matches our local version
+  if data["version"] and tonumber(data["version"]) and tonumber(data["version"]) <= APP_VERSION then
+    g_logger.info("Client is up to date (version " .. APP_VERSION .. ")")
+    updaterWindow.mainProgress:setPercent(100)
+    scheduledEvent = scheduleEvent(Updater.abort, 20)
+    return
+  end
+  
   local newFiles = false
   local finalFiles = {}
   local localFiles = g_resources.filesChecksums()
@@ -250,6 +258,9 @@ function Updater.check(args)
   }, function(data, err)
     if err then      
       return Updater.error(err)
+    end
+    if data["version"] then
+      g_logger.info("Server returned version: " .. tostring(data["version"]) .. ", local version: " .. tostring(APP_VERSION))
     end
     updateData = data
   end)
