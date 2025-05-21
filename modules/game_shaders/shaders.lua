@@ -20,6 +20,13 @@ function init()
   -- UI element shaders
   g_shaders.createShader("ui_rainbow", "/shaders/ui_rainbow_vertex", "/shaders/ui_rainbow_fragment")
   
+  -- Rarity-based UI shaders - these all use the same shader for now
+  -- but you can create different ones by duplicating and modifying the shader files
+  g_shaders.createShader("ui_rare", "/shaders/ui_rainbow_vertex", "/shaders/ui_rainbow_fragment")
+  g_shaders.createShader("ui_epic", "/shaders/ui_rainbow_vertex", "/shaders/ui_rainbow_fragment")
+  g_shaders.createShader("ui_legendary", "/shaders/ui_rainbow_vertex", "/shaders/ui_rainbow_fragment")
+  g_shaders.createShader("ui_mythic", "/shaders/ui_rainbow_vertex", "/shaders/ui_rainbow_fragment")
+  
   -- You can use UIWidget:setImageShader("ui_rainbow") to apply shader to any UI element
 
 end

@@ -105,7 +105,7 @@ function init()
   
   -- Apply shader to the tooltip window (FlatPanel background)
   -- Uncomment the line below to apply shader to the tooltip
-  setTooltipShader("ui_rainbow")
+  setTooltipShader("ui_rare")
 end
 
 function terminate()
@@ -319,7 +319,29 @@ function buildItemTooltip(item)
   local third = item.third
   local weight = item.weight
 
+
+  -- Apply shader based on item rarity
+  if rarity == 5 then -- Legendary
+    setTooltipShader("ui_legendary")
+  elseif rarity == 4 then -- Epic
+    setTooltipShader("ui_epic")
+  elseif rarity == 3 then -- Rare
+    setTooltipShader("ui_rare")
+  else -- Clear shader for other rarities
+    clearTooltipShader()
+  end
+
+
   itemWeightLabel:setText(formatWeight(weight))
+  
+  -- Apply shader to weight label for high rarity items
+  if rarity >= 4 then -- Epic or higher
+    g_game.setLabelShader(itemWeightLabel, "ui_rainbow")
+  elseif rarity == 3 then -- Rare
+    g_game.setLabelShader(itemWeightLabel, "ui_rare")
+  else
+    g_game.clearShader(itemWeightLabel)
+  end
 
   itemSprite:setItemId(id)
   itemSprite:setItemCount(count)
@@ -525,22 +547,53 @@ function formatWeight(weight)
     ss = weightString:sub(1, len - 2) .. "." .. weightString:sub(len - 1, len)
   end
 
+  -- Apply colored text for rarity
   ss = ss .. " oz."
   return ss
+end
+
+-- Instead of trying to apply a shader directly, create a style with a colored background
+function styleWeightText(label, rarity)
+  if rarity >= 4 then -- Epic or higher
+    -- Use a rainbow or gradient color effect for high rarity
+    label:setColor("#FF00FF")  -- Bright magenta as fallback
+  elseif rarity == 3 then -- Rare
+    label:setColor("#25fc19")  -- Green
+  else
+    label:setColor("#ffffff")  -- White (default)
+  end
 end
 
 -- Function to set a shader on the tooltip
 function setTooltipShader(shaderName)
   if not tooltipWindow then return end
   
-  -- Apply the shader to the tooltip panel (which is a FlatPanel)
-  tooltipWindow:setImageShader(shaderName)
+  -- Use the global shader function
+  g_game.setShader(tooltipWindow, shaderName)
 end
 
 -- Function to remove shader from tooltip
 function clearTooltipShader()
   if not tooltipWindow then return end
   
-  -- Clear the shader by setting empty string
-  tooltipWindow:setImageShader("")
+  -- Use the global shader function
+  g_game.clearShader(tooltipWindow)
 end
+
+-- Function to set shader on a label
+function setLabelShader(label, shaderName)
+  if not label then return end
+  
+  -- Use the global shader function
+  g_game.setLabelShader(label, shaderName)
+end
+
+-- Function to clear shader from a label
+function clearLabelShader(label)
+  if not label then return end
+  
+  -- Use the global shader function
+  g_game.setLabelShader(label, "")
+end
+
+
