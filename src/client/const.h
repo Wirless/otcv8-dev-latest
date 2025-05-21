@@ -50,9 +50,11 @@ namespace Otc
     enum ItemRarity_t : uint8_t {
         ITEM_RARITY_NONE = 0,
         ITEM_RARITY_COMMON,
+        ITEM_RARITY_UNCOMMON,
         ITEM_RARITY_RARE,
         ITEM_RARITY_EPIC,
-        ITEM_RARITY_LEGENDARY
+        ITEM_RARITY_LEGENDARY,
+        ITEM_RARITY_MYTHIC
     };
 
     enum DepthConst {
