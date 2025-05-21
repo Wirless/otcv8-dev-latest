@@ -17,6 +17,11 @@ function init()
 
   -- you can use creature:setOutfitShader("outfit_rainbow") to set shader
 
+  -- UI element shaders
+  g_shaders.createShader("ui_rainbow", "/shaders/ui_rainbow_vertex", "/shaders/ui_rainbow_fragment")
+  
+  -- You can use UIWidget:setImageShader("ui_rainbow") to apply shader to any UI element
+
 end
 
 function terminate()

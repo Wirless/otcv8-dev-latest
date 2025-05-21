@@ -720,6 +720,31 @@ void Application::registerLuaFunctions()
     g_lua.bindClassMemberFunction<UIWidget>("setShadow", &UIWidget::setShadow);
     g_lua.bindClassMemberFunction<UIWidget>("setCursor", &UIWidget::setCursor);
     g_lua.bindClassMemberFunction<UIWidget>("setChangeCursorImage", &UIWidget::setChangeCursorImage);
+    g_lua.bindClassMemberFunction<UIWidget>("setImageBorderRight", &UIWidget::setImageBorderRight);
+    g_lua.bindClassMemberFunction<UIWidget>("setImageBorderBottom", &UIWidget::setImageBorderBottom);
+    g_lua.bindClassMemberFunction<UIWidget>("setImageBorderLeft", &UIWidget::setImageBorderLeft);
+    g_lua.bindClassMemberFunction<UIWidget>("setImageBorder", &UIWidget::setImageBorder);
+    g_lua.bindClassMemberFunction<UIWidget>("setImageShader", &UIWidget::setImageShader);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageClip", &UIWidget::getImageClip);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageOffsetX", &UIWidget::getImageOffsetX);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageOffsetY", &UIWidget::getImageOffsetY);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageOffset", &UIWidget::getImageOffset);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageWidth", &UIWidget::getImageWidth);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageHeight", &UIWidget::getImageHeight);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageSize", &UIWidget::getImageSize);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageRect", &UIWidget::getImageRect);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageColor", &UIWidget::getImageColor);
+    g_lua.bindClassMemberFunction<UIWidget>("isImageFixedRatio", &UIWidget::isImageFixedRatio);
+    g_lua.bindClassMemberFunction<UIWidget>("isImageSmooth", &UIWidget::isImageSmooth);
+    g_lua.bindClassMemberFunction<UIWidget>("isImageAutoResize", &UIWidget::isImageAutoResize);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageBorderTop", &UIWidget::getImageBorderTop);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageBorderRight", &UIWidget::getImageBorderRight);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageBorderBottom", &UIWidget::getImageBorderBottom);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageBorderLeft", &UIWidget::getImageBorderLeft);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageTextureWidth", &UIWidget::getImageTextureWidth);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageTextureHeight", &UIWidget::getImageTextureHeight);
+    g_lua.bindClassMemberFunction<UIWidget>("getImageShader", &UIWidget::getImageShader);
+    g_lua.bindClassMemberFunction<UIWidget>("resizeToText", &UIWidget::resizeToText);
 
     // UILayout
     g_lua.registerClass<UILayout>();
