@@ -16,29 +16,45 @@ TooltipEmpty < UIWidget
   anchors.left: parent.left
   anchors.right: parent.right
 
-FlatPanel
+Panel
+  image-source: /images/ui/panel_side.png
+  image-border: 4
+  padding: 4
+  
   Label
     id: itemWeightLabel
     font: verdana-11px-rounded
-    anchors.top: parent.top
-    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
     text-auto-resize: true
     margin-top: 5
     margin-left: 5
-    
-  UIItem
-    id: itemSprite
-    font: verdana-11px-rounded
-    virtual: true
+  
+  Panel
+    id: spriteContainer
     anchors.top: parent.top
-    anchors.right: parent.right
-    size: 32 32
+    anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 5
-    margin-right: 5
+    size: 38 38
+    image-source: /images/ui/menubox.png
+    image-border: 3
+    
+    UIItem
+      id: itemSprite
+      font: verdana-11px-rounded
+      virtual: true
+      anchors.top: parent.top
+      anchors.right: parent.right
+      size: 32 32
+      margin-top: 3
+      margin-right: 3
 
   Panel
     id: labels
-    anchors.fill: parent
+    anchors.top: spriteContainer.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
     margin-top: 5
     margin-bottom: 5
     margin-left: 37

@@ -15,11 +15,11 @@ void main()
     // Create pulsing green effect based on time
     float pulseIntensity = 0.7 + 0.3 * sin(u_Time * 1.5);
     
-    // Green color base (bright green)
-    vec3 greenColor = vec3(0.1, 0.9, 0.2) * pulseIntensity;
+    // blue (blue)
+    vec3 blueColor = vec3(0.1, 0.1, 0.9) * pulseIntensity;
     
     // Apply green glow only to opaque parts of the texture
-    vec4 finalColor = vec4(textureColor.rgb * greenColor, textureColor.a);
+    vec4 finalColor = vec4(textureColor.rgb * blueColor, textureColor.a);
     
     // Apply UI element's color
     gl_FragColor = finalColor * u_Color;

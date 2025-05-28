@@ -8,3 +8,10 @@ Item < UIItem
 
   $disabled:
     color: #646464
+
+  UIWidget
+    id: frame
+    anchors.fill: parent
+    phantom: true
+    image-source: /images/ui/rarity_frames
+    visible: false
