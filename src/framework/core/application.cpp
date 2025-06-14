@@ -32,9 +32,12 @@
 #include <framework/platform/crashhandler.h>
 #include <framework/platform/platform.h>
 #include <framework/http/http.h>
+#include <windows.h>
 
 #if not(defined(ANDROID) || defined(FREE_VERSION))
-#include <boost/process.hpp>
+// Disabled due to version conflicts
+// #include <boost/process.hpp>
+#define BOOST_PROCESS_DISABLED
 #endif
 
 #include <locale>
@@ -182,7 +185,7 @@ void Application::close()
 
 void Application::restart()
 {
-#if not(defined(ANDROID) || defined(FREE_VERSION))
+#if not(defined(ANDROID) || defined(FREE_VERSION)) && !defined(BOOST_PROCESS_DISABLED)
     boost::process::child c(g_resources.getBinaryName());
     std::error_code ec2;
     if (c.wait_for(std::chrono::seconds(1), ec2)) {
@@ -191,13 +194,14 @@ void Application::restart()
     c.detach();
     quick_exit();
 #else
+    g_logger.info("Restarting application (process spawn disabled)");
     exit();
 #endif
 }
 
 void Application::restartArgs(const std::vector<std::string>& args)
 {
-#if not(defined(ANDROID) || defined(FREE_VERSION))
+#if not(defined(ANDROID) || defined(FREE_VERSION)) && !defined(BOOST_PROCESS_DISABLED)
     boost::process::child c(g_resources.getBinaryName(), boost::process::args(args));
     std::error_code ec2;
     if (c.wait_for(std::chrono::seconds(1), ec2)) {
@@ -206,6 +210,7 @@ void Application::restartArgs(const std::vector<std::string>& args)
     c.detach();
     quick_exit();
 #else
+    g_logger.info("Restarting application with args (process spawn disabled)");
     exit();
 #endif
 }

@@ -33,7 +33,7 @@
 #include <regex>
 
 #if not(defined(ANDROID) || defined(FREE_VERSION))
-#include <boost/process.hpp>
+#define BOOST_PROCESS_DISABLED
 #endif
 #include <locale>
 #include <zlib.h>
@@ -69,7 +69,7 @@ void ResourceManager::terminate()
 }
 
 bool ResourceManager::launchCorrect(const std::string& product, const std::string& app) { // curently works only on windows
-#if not(defined(ANDROID) || defined(FREE_VERSION))
+#if not(defined(ANDROID) || defined(FREE_VERSION)) && !defined(BOOST_PROCESS_DISABLED)
     auto init_path = m_binaryPath.parent_path();
     init_path /= INIT_FILENAME;
     if (std::filesystem::exists(init_path)) // debug version
@@ -137,6 +137,7 @@ bool ResourceManager::launchCorrect(const std::string& product, const std::strin
     c.detach();
     return true;
 #else
+    g_logger.info("Process launch disabled due to Boost.Process version conflict");
     return false;
 #endif
 }
@@ -605,6 +606,20 @@ std::string ResourceManager::fileChecksum(const std::string& path) {
     PHYSFS_close(file);
 
     auto checksum = g_crypt.crc32(buffer, false);
+    
+    // Remove leading zeros from the checksum for consistency
+    size_t firstNonZero = 0;
+    while (firstNonZero < checksum.length() && checksum[firstNonZero] == '0') {
+        firstNonZero++;
+    }
+    
+    // If it's all zeros, keep at least one
+    if (firstNonZero == checksum.length()) {
+        checksum = "0";
+    } else if (firstNonZero > 0) {
+        checksum = checksum.substr(firstNonZero);
+    }
+    
     cache[path] = checksum;
 
     return checksum;
